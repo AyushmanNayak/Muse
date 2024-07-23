@@ -27,10 +27,6 @@ const userSchema = new Schema({
     headline : {
         type  : String
     },
-    phone: {
-        type: String,
-        required: false
-    },
     isFreelancer: {
         type: Boolean,
         default: false, // Use lowercase 'false' for default value
