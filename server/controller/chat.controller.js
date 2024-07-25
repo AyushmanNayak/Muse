@@ -1,23 +1,26 @@
 import Chat from "../models/chat.model.js";
 
-export const createChat = async (req, res, next) => {
+export const createChat = async (req, res) => {
+  console.log('Incoming request:', req.body, req.userId, req.isFreelancer);
+
+  if (!req.userId || typeof req.isFreelancer === 'undefined') {
+    return res.status(400).send('Invalid user data');
+  }
+
   const newChat = new Chat({
     chatId: req.isFreelancer ? req.userId + req.body.to : req.body.to + req.userId,
     freelancerId: req.isFreelancer ? req.userId : req.body.to,
-    buyerId: req.isFreelancer ? req.body.to : req.userId, 
-    //bascially the rule we are using heere
-    //first convo will always be red b sneder
-    readByFreelancer : req.isFreelancer,
-    readByBuyer : !req.isFreelancer,
+    buyerId: req.isFreelancer ? req.body.to : req.userId,
   });
 
   try {
     const savedChat = await newChat.save();
     res.status(201).send(savedChat);
   } catch (err) {
-    res.send("error occured at createCHat"  + err);
+    res.status(500).send("Error occurred at createChat: " + err);
   }
 };
+
 
 export const updateChat = async (req, res, next) => {
   try {
@@ -43,7 +46,7 @@ export const getSingleChat = async (req, res) => {
   try {
     const chat = await Chat.findOne({ chatId: req.params.id });
     if (chat) {
-      console.log("maje maje");
+      console.log("happy happy");
       return res.status(200).send(chat);
     } else {
       console.log("bvbv");

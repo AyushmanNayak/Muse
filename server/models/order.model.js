@@ -18,7 +18,8 @@ const orderSchema = new Schema({
         required : true
     },
     isCompleted : {
-        type : Boolean, default : false
+        type : Boolean,
+         default : false
     },
     buyerId : {
              type: String,

@@ -2,17 +2,16 @@ import Messages from "../models/messages.model.js"
 import Chat from "../models/chat.model.js";
 export const createMessage = async(req, res) =>  {
     const newMessage = new Messages({
-        Chatid : req.params.id,
+        chatId : req.params.id,
         userId  : req.userId,
         baat : req.body.baat,
     })
     try {
         const savedMessage = await newMessage.save();
         await Chat.findOneAndUpdate(
-            {id : req.body.Chatid},{
+            {id : req.params.id},{
                 $set : {
-                    readByFreelancer : req.isFreelancer,
-                    readByBuyer : !req.isFreelancer,
+                    
                     lastMessage : req.body.baat
                 } 
             },{
@@ -28,7 +27,7 @@ export const createMessage = async(req, res) =>  {
 
 export const getAllMessages = async(req, res) =>  {
     try {
-        const messages =  await Messages.find({ Chatid :req.params.id});
+        const messages =  await Messages.find({ chatId :req.params.id});
         res.status(200).send(messages);
     } catch (error) {
         res.send("erir while getting all messages");

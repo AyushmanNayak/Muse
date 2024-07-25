@@ -7,6 +7,7 @@ import chatRoute from './routes/chat.route.js';
 import jobRoute from './routes/job.route.js';
 import messagesRoute from './routes/messages.route.js';
 import orderRoute from './routes/order.route.js';
+import payRoute from './routes/pay.route.js';
 import authRoute from './routes/auth.route.js'
 import cookieParser from 'cookie-parser'
 
@@ -37,11 +38,12 @@ mongoose.connect(process.env.MONGO, {
 
 // Use the routes
 app.use("/api/user", userRoute);
-app.use("/api/chat", chatRoute);
+app.use("/api/chats", chatRoute);
 app.use("/api/auth", authRoute);
-app.use("/api/job", jobRoute);
+app.use("/api/jobs", jobRoute);
 app.use("/api/messages", messagesRoute);
 app.use("/api/order", orderRoute);
+app.use("/api/pay", payRoute);
 
 // // Error handling middleware
 // app.use((err, req, res, next) => {

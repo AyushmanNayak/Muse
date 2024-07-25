@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from "./ui/button";
 
 import axios from "axios";
-import { ContainerWithChildren } from 'postcss/lib/container';
+
 
 
 const Navbar = () => {
@@ -32,7 +32,7 @@ const Navbar = () => {
         withCredentials : true 
       }
       );
-      localStorage.setItem('currentUser_LS', null);
+      localStorage.setItem('currentUser-LS', null);
       navigate('/');
     } catch (err) {
       console.log(err);
@@ -46,8 +46,8 @@ const Navbar = () => {
           <img src="/muse.png" alt="Logo" />
         </Link>
         <div className="space-x-4 flex items-center bg-black">
-          <Link to="/about" className="text-white hover:text-zinc-400">
-            About
+          <Link to="/jobs" className="text-white hover:text-zinc-400">
+            Explore
           </Link>
 
           {!currentUser ? (
@@ -71,9 +71,9 @@ const Navbar = () => {
               </div>
               {open && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-20">
-                  {currentUser.isSeller && (
+                  {currentUser.isFreelancer && (
                     <>
-                      <Link className="block px-4 py-2 bg-white text-gray-800 hover:bg-gray-200" to="/mygigs">
+                      <Link className="block px-4 py-2 bg-white text-gray-800 hover:bg-gray-200" to="/myJobs">
                         Gigs
                       </Link>
                       <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200 bg-white" to="/add">
@@ -84,7 +84,7 @@ const Navbar = () => {
                   <Link className="block px-4 py-2 text-gray-800  hover:bg-gray-200 bg-white" to="/orders">
                     Orders
                   </Link>
-                  <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200 bg-white" to="/messages">
+                  <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200 bg-white" to="/chats">
                     Messages
                   </Link>
                   <button onClick={handleLogout} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">

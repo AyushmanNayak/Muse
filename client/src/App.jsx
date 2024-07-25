@@ -4,13 +4,15 @@ import Footer from "./components/Footer";
 import "./App.css"
 import Home from "./pages/Home";
 import Jobs from "./pages/Jobs";
+import Success from "./pages/Success";
+import Failure from "./pages/Failure";
 import Job from "./pages/Job";
 import {Login} from "./pages/Login";
 import {Register} from "./pages/Register.jsx";
 import Add from "./pages/Add";
 import Orders from "./pages/Orders";
-import Messages from "./pages/Messages";
-import Message from "./pages/Message";
+import Chats from "./pages/Chats";
+import Chat from "./pages/Chat";
 import MyJobs from "./pages/MyJobs";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -46,11 +48,13 @@ const App = () => {
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/myJobs" element={<MyJobs />} />
           <Route path="/orders" element={<Orders />} />
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/message/:id" element={<Message />} />
+          <Route path="/chats" element={<Chats />} />
+          <Route path="/chats/:id" element={<Chat />} />
           <Route path="/add" element={<Add />} />
           <Route path="/gig/:id" element={<Job />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/failure" element={<Failure />} />
           <Route path="/login" element={<Login />} />
         </Routes>
        

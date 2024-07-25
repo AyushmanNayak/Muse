@@ -26,7 +26,11 @@ const chatSchema = new Schema({
     buyerId: {
         type: String,
         required: true
+    } ,
+    lastMessage   : {
+        type : String,
     }
+    
 
 }, {
     timestamps: true

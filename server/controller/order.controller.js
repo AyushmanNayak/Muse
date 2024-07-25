@@ -4,26 +4,26 @@ import Stripe from "stripe"
 
 //test : ffcreateOrder function to just "create" an order without keeping payment in mind
 
-// export const createOrder = async (req, res) => {
-//   try {
-//     const job = await Job.findById(req.params.jobId);
-//     const newOrder = new Orders({
-//       jobId: job._id,
-//       short_title: job.short_title,
-//       price: job.price,
-//       img: job.cover,
-//       freelancerId: job.userId,
-//       buyerId: req.userId,
-//       payment_intent: "currentlyTemp"
+export const createOrder = async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.jobId);
+    const newOrder = new Orders({
+      jobId: job._id,
+      short_title: job.short_title,
+      price: job.price,
+      img: job.cover,
+      freelancerId: job.userId,
+      buyerId: req.userId,
+      payment_intent: "currentlyTemp"
 
-//     });
-//     await newOrder.save();
-//     return res.status(200).send("order created successfully" + newOrder);
+    });
+    await newOrder.save();
+    return res.status(200).send("order created successfully" + newOrder);
 
-//   } catch (error) {
-//     return res.send("error at createOrder" + error);
-//   }
-// }
+  } catch (error) {
+    return res.send("error at createOrder" + error);
+  }
+}
 
 export const allmyOrders = async (req, res) => {
   try {

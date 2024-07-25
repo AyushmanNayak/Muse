@@ -1,4 +1,7 @@
+import { get } from "mongoose";
 import Job from "../models/job.model.js";
+
+import User from "../models/user.model.js"
 
 //not to fotgest, debugging this was the hardest
 export const createJob = async (req, res) => {
@@ -68,5 +71,21 @@ export const getJob = async(req, res) => {
     } catch (error) {
         console.error("GET JOB BY ID ROUTE ERROR", error);
         return res.status(500).send("Internal Server Error");
+    }
+}
+
+export const getname =  async(req, res) => {
+    try {
+        const jid = req.params.id; //onject id
+        const jobObject = await Job.findById(jid);
+        if (!jobObject) {
+            return res.status(404).send("Job not found");
+        }
+        const userId = jobObject.userId;
+        const user = await User.findById(userId);
+        const userName = user.username;
+        return res.status(200).send(userName)
+    } catch (error) {
+        return res.status(500).send("cant get name");
     }
 }
