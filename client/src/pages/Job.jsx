@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Card,
   CardContent,
@@ -11,6 +12,7 @@ import {
 } from '@/components/ui/card';
 
 const SingleGig = () => {
+  const navigate = useNavigate();
   const { id } = useParams();  // Correct way to use useParams
   const [gig, setGig] = useState(null);
   const [username, setUsername] = useState('');
@@ -56,36 +58,39 @@ const SingleGig = () => {
     }
   };
 
-  const handleCreation = async (jobId) => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser-LS")) ;
-    try {
-      const userRes = await axios.get(`http://localhost:8001/api/jobs/name/${id}`, { withCredentials: true });
 
+  const handleCreation = async (jobId) => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser-LS"));
+    console.log(currentUser)
+
+    try {
+      console.log("Creating order with jobId:", jobId);
+      console.log("FreelancerId:", freelancerId);
+      console.log("BuyerId:", buyerId);
+      console.log("Price:", gig.price);
 
       await axios.post(`http://localhost:8001/api/order/${jobId}`, { 
         jobId: id,
-        
-        freelancerId : 
-        buyerId: currentUser._id,
+        freelancerId: freelancerId,
+        buyerId: buyerId,
         price: gig.price,
-        // Add more details as needed
       }, { withCredentials: true });
 
-      // Optionally, you can navigate to an order confirmation page or show a success message
+      console.log("Order created successfully, navigating to orders page");
       navigate('/orders');
     } catch (error) {
       console.error("Error creating order:", error);
     }
   };
 
+if (loading) {
+  return <div>Loading...</div>;
+}
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+if (!gig) {
+  return <div>Gig not found</div>;
+}
 
-  if (!gig) {
-    return <div>Gig not found</div>;
-  }
 
   return (
     <div className="bg-black min-h-screen text-white flex justify-center items-center ">
@@ -116,7 +121,7 @@ const SingleGig = () => {
         </CardFooter>
 
         <CardFooter className="flex-row gap-2">
-          <Button onlick={handleCreation}>Create Order</Button>
+          <Button onlick={() => handleCreation(gig._id)}>Create Order</Button>
         </CardFooter>
 
       </Card>
