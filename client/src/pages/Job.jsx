@@ -61,7 +61,7 @@ const SingleGig = () => {
 
   const handleCreation = async (jobId) => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser-LS"));
-    console.log(currentUser)
+    console.log(currentUser);
 
     try {
       console.log("Creating order with jobId:", jobId);
