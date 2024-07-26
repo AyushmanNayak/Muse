@@ -8,7 +8,7 @@ router.get('/', getAllJobs); //didnt add verify token as I want anyone to see al
 router.get('/:id', getJob);
 router.post('/', verifyToken,createJob);
 router.get('/name/:id' , getname);
-router.get('/my/:id', myJobs);
+router.get('/my/:id', verifyToken, myJobs);
 router.delete('/:id',verifyToken, deleteJob);
 
 
