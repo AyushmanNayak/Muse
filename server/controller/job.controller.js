@@ -89,3 +89,19 @@ export const getname =  async(req, res) => {
         return res.status(500).send("cant get name");
     }
 }
+
+export const myJobs = async (req, res) => {
+    try {
+        const uId = req.params.id; // userId
+        const jobObjects = await Job.find({ userId: uId });
+
+        if (!jobObjects || jobObjects.length === 0) {
+            return res.status(404).json({ message: "No posts by you yet" });
+        }
+
+        return res.status(200).json(jobObjects);
+    } catch (error) {
+        console.error("An error occurred:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};

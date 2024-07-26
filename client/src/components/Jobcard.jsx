@@ -10,7 +10,7 @@ import {
   } from "@/components/ui/card"
 import { useEffect } from "react";
 
-const  Jobcard = ({item}) => {
+const  Jobcard = ({item, isCreatedByCurrentUser}) => {
   const [username, setUsername] = useState('');
   useEffect(() => {
     const fetchUsername = async () => {
@@ -28,7 +28,7 @@ const  Jobcard = ({item}) => {
 
 
   return (
-    <Link to={`/gig/${item._id}`} className="link">
+    <Link to={`/job/${item._id}`} className="link">
 
     <Card className="hover:shadow-lg hover:transform hover:scale-105 transition-all duration-300 cursor-pointer w-fit h-fit"  > 
   <CardHeader>
@@ -42,7 +42,10 @@ const  Jobcard = ({item}) => {
    
   </CardHeader>
   <CardContent>
-    <p className='text-slate-200'>{item.short_description}</p>
+  <p className="text-slate-200">{item.short_description}</p>
+        {isCreatedByCurrentUser && (
+          <p className="text-green-500 font-bold">You created this job</p>
+        )}
   </CardContent>
   <CardFooter>
     <p className='text-slate-400'>starts at ₹{item.price}</p>

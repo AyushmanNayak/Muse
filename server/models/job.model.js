@@ -11,7 +11,7 @@ const jobSchema = new Schema({
     },
     cover: {
         type: String,
-        required: true
+       
     },
     short_title: {
         type: String,

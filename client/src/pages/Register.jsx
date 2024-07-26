@@ -28,8 +28,11 @@ export function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = await upload(dp);
-    console.log("Uploaded profile picture URL:", url);
+    if(dp){
+      const url = await upload(dp);
+      console.log("Uploaded profile picture URL:", url);
+
+    }
 
     try {
       await axios.post("http://localhost:8001/api/auth/register", {
@@ -38,7 +41,7 @@ export function Register() {
       })
       navigate ("/") 
     } catch (error) {
-      
+      console.error("error while registering frontedn");
     }
   };
 
