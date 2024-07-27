@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Navbar from "./components/Navbar";
 
 import "./App.css"
 import Home from "./pages/Home";
@@ -14,7 +13,6 @@ import Orders from "./pages/Orders";
 import Chats from "./pages/Chats";
 import Chat from "./pages/Chat";
 import MyJobs from "./pages/MyJobs";
-
 
 
 const App = () => {

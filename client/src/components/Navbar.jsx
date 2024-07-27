@@ -74,10 +74,10 @@ const Navbar = () => {
                   {currentUser.isFreelancer && (
                     <>
                       <Link className="block px-4 py-2 bg-white text-gray-800 hover:bg-gray-200" to="/myJobs">
-                        Gigs
+                        My Posts
                       </Link>
                       <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200 bg-white" to="/add">
-                        Add New Gig
+                        Post a job
                       </Link>
                     </>
                   )}
