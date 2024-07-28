@@ -34,7 +34,9 @@ router.post('/create-checkout-session', async (req, res) => {
         unit_amount: product.price * 100, // Convert amount to cents
       },
       quantity: 1
-    }));
+    }));  
+
+    
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
