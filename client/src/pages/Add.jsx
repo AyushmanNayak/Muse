@@ -17,7 +17,7 @@ const LabelInputContainer = ({ children, className }) => (
 
 const Add = () => {
   const navigate = useNavigate();
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const [cover, setCover] = useState('');
   const [url, setUrl] = useState('');
   const [job, setJob] = useState({
@@ -48,7 +48,7 @@ const Add = () => {
       console.log("Uploaded cover image:", url);
 
     try {
-      await axios.post(`http://localhost:8001/api/jobs/`, {
+      await axios.post(`${API_URL}/jobs/`, {
         ...job,
         cover: url,
         userId: currentUser._id

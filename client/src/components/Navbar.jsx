@@ -8,6 +8,8 @@ import axios from "axios";
 
 const Navbar = () => {
  
+ const currentUser = JSON.parse(localStorage.getItem("currentUser-LS"));
+ const API_URL = import.meta.env.VITE_API_URL;
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
@@ -19,16 +21,17 @@ const Navbar = () => {
 
   useEffect(() => {
     window.addEventListener('scroll', isActive);
+    // clg(currentUser.dp);
     return () => {
       window.removeEventListener('scroll', isActive);
     };
   }, []);
 
-  const currentUser = JSON.parse(localStorage.getItem('currentUser-LS'));
+  
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:8001/api/auth/logout', {
+      await axios.post(`${API_URL}/auth/logout`, {
         withCredentials : true 
       }
       );

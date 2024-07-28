@@ -5,6 +5,7 @@ import axios from "axios";
 
 const Chat = () => {
   const { id } = useParams();
+  const API_URL = import.meta.env.VITE_API_URL;
   const currentUser = JSON.parse(localStorage.getItem("currentUser-LS"));
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +14,7 @@ const Chat = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const res = await axios.get(`http://localhost:8001/api/messages/${id}`, {withCredentials : true});
+        const res = await axios.get(`${API_URL}/messages/${id}`, {withCredentials : true});
         setMessages(res.data);
       } catch (err) {
         setError("Failed to fetch messages.");
@@ -33,7 +34,7 @@ const Chat = () => {
       baat: e.target[0].value,
     };
     try {
-      await axios.post(`http://localhost:8001/api/messages/${id}`, message, {withCredentials : true});
+      await axios.post(`${API_URL}/messages/${id}`, message, {withCredentials : true});
       setMessages((prev) => [...prev, message]);
       e.target[0].value = "";
     } catch (err) {

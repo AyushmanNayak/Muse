@@ -9,6 +9,7 @@ import { loadStripe } from "@stripe/stripe-js";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState('');
@@ -34,7 +35,8 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`http://localhost:8001/api/order/`, {
+        console.log(API_URL);
+        const res = await axios.get(`${API_URL}/order/`, {
           withCredentials : true 
         });
         setOrders(res.data);
@@ -51,40 +53,53 @@ const Orders = () => {
   }, []);
 
   const handleContact = async (order) => {
-    //try to create a chat if there isn't one alraedy
+    // Log the order details to debug
+    console.log("Order details:", order);
+
     const freelancerId = order.freelancerId;
     const buyerId = order.buyerId;
-  // Log the values to debug
-  console.log("freelancerId:", freelancerId);
-  console.log("buyerId:", buyerId);
+    const cid = freelancerId + buyerId;
 
-     const cid = freelancerId + buyerId;
-    // console.log(id);
+    console.log("freelancerId:", freelancerId);
+    console.log("buyerId:", buyerId);
+    console.log("Chat ID (cid):", cid);
 
     try {
-      const res = await axios.get(`http://localhost:8001/api/chats/${cid}`, {
-        withCredentials  : true
-      });
-      if(res) navigate(`/chats/${res.data.chatId}`);
-      else{
-        const res = await axios.post(`http://localhost:8001/api/chats/`, {
-          withCredentials : true,
-           to: currentUser.isFreelancer ? buyerId : freelancerId,
-         });
-         navigate(`/chats/${res.data.chatId}`);
-      }
-     
+        // Try to fetch the chat
+        const res = await axios.get(`${API_URL}/chats/${cid}`, {
+            withCredentials: true
+        });
+
+        // Navigate to the chat if it exists
+        if (res.data) {
+            navigate(`/chats/${res.data.chatId}`);
+        } else {
+            throw new Error('Chat not found, will create a new one');
+        }
     } catch (err) {
-      console.error("error while accessing/creating chat")
+        // If the chat doesn't exist, create a new one
+        console.error("Chat not found, creating a new one. Error:", err);
+
+        try {
+          const res = await axios.post(`${API_URL}/chats/`, {
+            to: currentUser.isFreelancer ? buyerId : freelancerId
+          }, { withCredentials: true }); // Ensure cookies or tokens are sent properly
+            navigate(`/chats/${res.data.chatId}`);
+
+            navigate(`/chats/${res.data.chatId}`);
+        } catch (creationErr) {
+            console.error("Error while creating a new chat:", creationErr);
+        }
     }
-  };
+};
+
 
 
   const handlePay = async (order) => {
     const stripe = await loadStripe('pk_test_51Pf7tC2NTLE8AdGGIdsoXYpvBlCcFtMz3UHEgQryyAaEwP6bl0920uwUu0BLpadQVMTmlHjMxc1Ale1y6Cj14edZ008fzN1cq6'); // Publishable key
 
     try {
-      const res = await axios.post('http://localhost:8001/api/pay/create-checkout-session', {
+      const res = await axios.post(`${API_URL}/pay/create-checkout-session`, {
         products: [order] // Ensure products is an array
       }, {
         headers: {

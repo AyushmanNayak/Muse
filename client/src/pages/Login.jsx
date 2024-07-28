@@ -14,6 +14,7 @@ const LabelInputContainer = ({ children, className }) => (
 
 
 export function Login () {
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
@@ -24,7 +25,7 @@ export function Login () {
     e.preventDefault(); 
 
     try {
-      const res = await axios.post("http://localhost:8001/api/auth/login", 
+      const res = await axios.post(`${API_URL}/auth/login`, 
         {username, password}, {
           withCredentials : true
         }

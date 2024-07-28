@@ -3,6 +3,7 @@ import Jobcard from "../components/Jobcard";
 import axios from "axios";
 
 function Jobs() {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +27,7 @@ function Jobs() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get("http://localhost:8001/api/jobs/");
+      const response = await axios.get(`${API_URL}/jobs/`);
       setData(response.data);
     } catch (err) {
       setError(err);

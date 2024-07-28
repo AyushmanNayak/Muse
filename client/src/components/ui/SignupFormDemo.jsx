@@ -15,8 +15,9 @@ const LabelInputContainer = ({ children, className }) => (
 
 export function Register() {
   const navigate = useNavigate();
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const [dp, setDp] = useState("");
+  const [dpUrl, setDpUrl] = useState("");
   const [user, setUser] = useState({
     name: "",
     username: "",
@@ -32,8 +33,9 @@ export function Register() {
     try {
       const url = await upload(dp);
       console.log("Uploaded profile picture URL:", url);
+      setDpUrl(url); // Update the state with the URL
 
-      await axios.post("http://localhost:8001/api/auth/register", {
+      await axios.post(`${API_URL}/auth/register`, {
         ...user,
         dp: url,
         withCredentials: true,

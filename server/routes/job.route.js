@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', getAllJobs); //didnt add verify token as I want anyone to see all jobs rn
 router.get('/:id', getJob);
 router.post('/', verifyToken,createJob);
-router.get('/name/:id' , getname);
+router.get('/name/:id' , getname);  //get username from jobId
 router.get('/my/:id', verifyToken, myJobs);
 router.delete('/:id',verifyToken, deleteJob);
 

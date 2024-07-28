@@ -12,12 +12,14 @@ import {
 } from '@/components/ui/card';
 
 const SingleGig = () => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const { id } = useParams();  // Correct way to use useParams
-  const [job, setGig] = useState(null);
+  const [job, setJob] = useState(null);
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(true);
   const [tunehibanaya, settunehibanaya] = useState(false);
+  const [uid, setUid] = useState('');
 
   const currentUser = JSON.parse(localStorage.getItem("currentUser-LS"));
 
@@ -25,10 +27,13 @@ const SingleGig = () => {
   useEffect(() => {
     const fetchGig = async () => {
       try {
-        const gigRes = await axios.get(`http://localhost:8001/api/jobs/${id}`);
-        setGig(gigRes.data);        
-        const userRes = await axios.get(`http://localhost:8001/api/jobs/name/${id}`, { withCredentials: true });
+        const gigRes = await axios.get(`${API_URL}/jobs/${id}`);
+        setJob(gigRes.data);        
+        const userRes = await axios.get(`${API_URL}/jobs/name/${id}`, { withCredentials: true });
         setUsername(userRes.data);
+        const idRes = await axios.get(`${API_URL}/jobs/${id}`);
+        setUid(idRes.userId);
+
         if(currentUser._id === gigRes.data.userId) {
           settunehibanaya(true);
         }
@@ -42,29 +47,60 @@ const SingleGig = () => {
     fetchGig();
   }, [id]);
 
-  const handleChat = async() => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser-LS"));
-    const freelancerId = job.userId; // Assuming the userId is from job object
-    const buyerId = currentUser._id;
-    const cid = freelancerId+buyerId;
-    console.log("freelancerId", freelancerId);
+
+
+
+
+  const handleChat = async (job) => {
+    const currentUser  = JSON.parse(localStorage.getItem("currentUser-LS"));
+    // Log the order details to debug
+    console.log("job detaiks :", job); 
+
+
+    // refer this :  const newChat = new Chat({
+    //   chatId: req.isFreelancer ? req.userId + req.body.to : req.body.to + req.userId,
+    //   freelancerId: req.isFreelancer ? req.userId : req.body.to,
+    //   buyerId: req.isFreelancer ? req.body.to : req.userId,
+    // });
+
+    //cid : iski Freelancerid + buyerID;
+
+    
+    const freelancerId = job.userId;
+    const buyerId = currentUser._id; 
+    const cid = freelancerId + buyerId;
+
+    console.log("freelancerId:", freelancerId);
+    console.log("buyerId:", buyerId);
+    console.log("Chat ID (cid):", cid);
 
     try {
-      const res = await axios.get(`http://localhost:8001/api/chats/${cid}`, { withCredentials: true });
+        // Try to fetch the chat
+        const res = await axios.get(`${API_URL}/chats/${cid}`, {
+            withCredentials: true
+        });
 
-    if (res.data) {
-        navigate(`/chats/${res.data.chatId}`);
-      } else {
-        console.log("here")
-        const createRes = await axios.post(`http://localhost:8001/api/chats/`, {
-          to: freelancerId
-        }, { withCredentials: true });
-        navigate(`/chats/${createRes.data.chatId}`);
-      }
-    } catch (error) {
-      console.error("Error while accessing/creating chat:", error);
+        // Navigate to the chat if it exists
+        if (res.data) {
+            navigate(`/chats/${res.data.chatId}`);
+        } else {
+            throw new Error('Chat not found, will create a new one');
+        }
+    } catch (err) {
+        // If the chat doesn't exist, create a new one
+        console.error("Chat not found, creating a new one. Error:", err);
+
+        try {
+          const res = await axios.post(`${API_URL}/chats/`, {
+            to: currentUser.isFreelancer ? buyerId : freelancerId
+          }, { withCredentials: true }); // Ensure cookies or tokens are sent properly
+            navigate(`/chats/${res.data.chatId}`);
+        } catch (creationErr) {
+            console.error("Error while creating a new chat:", creationErr);
+        }
     }
-  };
+};
+
 
 
   const handleCreation = async (jobId) => {
@@ -79,7 +115,7 @@ const SingleGig = () => {
       console.log("BuyerId:", buyerId);
       console.log("Price:", job.price);
 
-      await axios.post(`http://localhost:8001/api/order/${jobId}`, { 
+      await axios.post(`${API_URL}/order/${jobId}`, { 
         jobId: id,
         freelancerId: freelancerId,
         buyerId: buyerId,
@@ -133,7 +169,7 @@ if (!job) {
         ) : (
           <>
             <CardFooter className="flex-row gap-2">
-              <Button onClick={handleChat}>Chat</Button>
+              <Button onClick={() => handleChat(job)}>Chat</Button>
             </CardFooter>
             <CardFooter className="flex-row gap-2">
               <Button onClick={() => handleCreation(job._id)}>Create Order</Button>

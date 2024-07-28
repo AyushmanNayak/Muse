@@ -3,7 +3,7 @@ import UserJobcard from '@/components/userJobCard';
 
 import axios from "axios"
 const MyJobs = () => {
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const [my, setMy] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -17,7 +17,9 @@ const MyJobs = () => {
       setIsLoading(true);
     setError(null);
       try {
-        const res = await axios.get(`http://localhost:8001/api/jobs/my/${uid}`);
+        const res = await axios.get(`${API_URL}/jobs/my/${uid}`, {
+          withCredentials  : true
+        });
         setMy(res.data);
         console.log(my);
         
@@ -35,7 +37,7 @@ const MyJobs = () => {
 
   const handleDelete = async (jobId) => {
     try {
-        await axios.delete(`http://localhost:8001/api/jobs/${jobId}`, {
+        await axios.delete(`${API_URL}/jobs/${jobId}`, {
             withCredentials: true,
         });
         setRefresh((prev) => !prev);

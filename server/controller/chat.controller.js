@@ -21,51 +21,41 @@ export const createChat = async (req, res) => {
   }
 };
 
-
-export const updateChat = async (req, res, next) => {
-  try {
-    const updatedChat = await Chat.findOneAndUpdate(
-      { id: req.params.id },
-      {
-        $set: {
-          readByFreelancer: true,
-          readByBuyer: true,
-          ...(req.isFreelancer ? { readByFreelancer: true } : { readByBuyer: true }),
-        },
-      },
-      { new: true } //to see the new chat
-    );
-
-    res.status(200).send(updatedChat);
-  } catch (err) {
-    res.send("error occured at update Chat"  + err);
-  }
-};
-
 export const getSingleChat = async (req, res) => {
   try {
     const chat = await Chat.findOne({ chatId: req.params.id });
+
     if (chat) {
-      console.log("happy happy");
-      return res.status(200).send(chat);
+      console.log("Chat found");
+      return res.status(200).json(chat);
     } else {
-      console.log("bvbv");
-      return res.status(404).send("Chat not found");
+      console.log("Chat not found");
+      return res.status(404).json({ message: "Chat not found" });
     }
   } catch (err) {
-    return res.status(500).send("Error occurred at getSingleChat: " + err);
+    console.error("Error occurred at getSingleChat: ", err);
+    return res.status(500).json({ message: "Error occurred at getSingleChat", error: err.message });
   }
 };
 
 
 export const getChats = async (req, res) => {
   try {
+    // Find chats based on whether the user is a freelancer or buyer
     const chats = await Chat.find(
       req.isFreelancer ? { freelancerId: req.userId } : { buyerId: req.userId }
     ).sort({ updatedAt: -1 });
-    if(chats) console.log("ok ok")
-    res.status(200).send(chats);
+
+    // Check if chats are found
+    if (chats && chats.length > 0) {
+      console.log("Chats found");
+      res.status(200).send(chats);
+    } else {
+      console.log("No chats found");
+      res.status(404).send("No chats found");
+    }
   } catch (err) {
-    res.send("error occured at get all chats " + err);
+    console.error("Error occurred at get all chats: ", err);
+    res.status(500).send("Error occurred at get all chats: " + err.message);
   }
-};
+}
