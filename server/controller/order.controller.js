@@ -10,14 +10,13 @@ export const createOrder = async (req, res) => {
     const newOrder = new Orders({
       jobId: job._id,
 
-
-      
       short_title: job.short_title,
       price: job.price,
       img: job.cover,
       freelancerId: job.userId,
       buyerId: req.userId,
-      payment_intent: "currentlyTemp"
+   
+
 
     });
     await newOrder.save();
@@ -30,6 +29,7 @@ export const createOrder = async (req, res) => {
 
 export const allmyOrders = async (req, res) => {
   try {
+
     // Check if the user is a freelancer or a buyer and query accordingly
     const allOrders = await Orders.find({
       ...(req.isFreelancer ? { freelancerId: req.userId } : { buyerId: req.userId })

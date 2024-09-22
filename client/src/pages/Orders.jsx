@@ -35,7 +35,11 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        console.log(API_URL);
+        const currentUser = JSON.parse(localStorage.getItem("currentUser-LS"));
+        console.log("currentUser");
+        console.log(currentUser); 
+        const id = currentUser._id;
+       // console.log(API_URL);
         const res = await axios.get(`${API_URL}/order/`, {
           withCredentials : true 
         });
@@ -154,15 +158,14 @@ const Orders = () => {
                   {/* <div className="cursor-pointer color-white"> <LocalPostOfficeIcon style={{color : "white"}}/> </div> */}
                   <Button onClick={() => handleContact(order)}>Chat</Button>
                   </td>
-                  <td className="p-3 text-slate-50 text-center gap-2 flex-row">
-                    {!order.isCompleted ? (
+                   <td className="p-3 text-slate-50 text-center">
+                    {/* Only show Pay button if current user is a buyer and order isn't completed */}
+                    {!order.isCompleted && !currentUser.isFreelancer ? (
                       <Button onClick={() => handlePay(order)}>Pay</Button>
                     ) : (
-                        <p>Paid</p>
-                    )
-                    }
-                  </td>
-                 
+                      <p>{order.isCompleted ? "Paid" : "Unavailable for freelancers"}</p>
+                    )}
+                  </td> 
                 
                 </tr>
               ))}

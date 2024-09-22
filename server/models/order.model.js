@@ -32,9 +32,6 @@ const orderSchema = new Schema({
     freelancerId: {
         type: String,
         required: true
-    },
-    payment_intent : {
-        type : String 
     }
 }
 , {

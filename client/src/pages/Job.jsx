@@ -79,8 +79,6 @@ const SingleGig = () => {
         buyerId: buyerId,
         price: job.price,
       }, { withCredentials: true });
-      navigate('/orders');
-      
     } catch (error) {
       console.error("Error creating order:", error);
     }
@@ -117,24 +115,19 @@ const SingleGig = () => {
           <p className='text-slate-400 text-sm'>Posted by: {username}</p>
         </CardFooter>
         <CardFooter>
-          {!currentUser ? (
-            <p className="text-red-500">Please log in to chat or create an order.</p>
-          ) : !currentUser.isFreelancer ? (
-            tunehibanaya ? (
-              <p className="text-1xl text-white">You created this job</p>
-            ) : (
-              <div className="flex-row gap-2">
-                <Button onClick={(e) => { e.stopPropagation(); handleChat(job); }}>Chat</Button>
-                <Button onClick={(e) => { e.stopPropagation(); handleCreation(job._id); }}>Create Order</Button>
-              </div>
-            )
-          ) : (
-            <>
-            <Button onClick={(e) => { e.stopPropagation(); handleCreation(job._id); }}>Create Order</Button>
-            <Button onClick={(e) => { e.stopPropagation(); handleChat(job); }}>Chat</Button>
-            </>
-          )}
-        </CardFooter>
+  {!currentUser ? (
+    <p className="text-red-500">Please log in to chat or create an order.</p>
+  ) : currentUser.isFreelancer ? (
+    <p className="text-white">Freelancers cannot create orders or chat on their own jobs.</p>
+  ) : tunehibanaya ? (
+    <p className="text-1xl text-white">You created this job</p>
+  ) : (
+    <div className="flex-row gap-2">
+      <Button onClick={(e) => { e.stopPropagation(); handleChat(job); }}>Chat</Button>
+      <Button onClick={(e) => { e.stopPropagation(); handleCreation(job._id); }}>Create Order</Button>
+    </div>
+  )}
+</CardFooter>
       </Card>
     </div>
   );
