@@ -9,6 +9,9 @@ export const createOrder = async (req, res) => {
     const job = await Job.findById(req.params.jobId);
     const newOrder = new Orders({
       jobId: job._id,
+
+
+      
       short_title: job.short_title,
       price: job.price,
       img: job.cover,

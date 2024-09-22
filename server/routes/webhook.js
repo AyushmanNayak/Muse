@@ -4,6 +4,8 @@ import Stripe from 'stripe';
 
 const router = express.Router();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+
+
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET; // Ensure this is set in your .env file
 
 // Used exspecifically for Stripe webhook verification, last commit mein Stripe couldn't validate the signature from this request

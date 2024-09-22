@@ -80,6 +80,7 @@ const SingleGig = () => {
         price: job.price,
       }, { withCredentials: true });
       navigate('/orders');
+      
     } catch (error) {
       console.error("Error creating order:", error);
     }
