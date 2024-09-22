@@ -1,7 +1,12 @@
 *{
 
- color: black;
+ color: white;
  background-color: black;
+}
+
+custom-toast {
+  color: white; /* Makes the font color white */
+  background-color: gray; /* Optional: Darken background for better contrast */
 }
 
 nav{

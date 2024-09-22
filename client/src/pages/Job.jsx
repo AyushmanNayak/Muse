@@ -14,27 +14,21 @@ import {
 const SingleGig = () => {
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
-  const { id } = useParams();  // Correct way to use useParams
+  const { id } = useParams();
   const [job, setJob] = useState(null);
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(true);
   const [tunehibanaya, settunehibanaya] = useState(false);
-  const [uid, setUid] = useState('');
-
   const currentUser = JSON.parse(localStorage.getItem("currentUser-LS"));
-
 
   useEffect(() => {
     const fetchGig = async () => {
       try {
         const gigRes = await axios.get(`${API_URL}/jobs/${id}`);
-        setJob(gigRes.data);        
+        setJob(gigRes.data);
         const userRes = await axios.get(`${API_URL}/jobs/name/${id}`, { withCredentials: true });
         setUsername(userRes.data);
-        const idRes = await axios.get(`${API_URL}/jobs/${id}`);
-        setUid(idRes.userId);
-
-        if(currentUser._id === gigRes.data.userId) {
+        if (currentUser && currentUser._id === gigRes.data.userId) {
           settunehibanaya(true);
         }
       } catch (error) {
@@ -47,99 +41,60 @@ const SingleGig = () => {
     fetchGig();
   }, [id]);
 
-
-
-
-
   const handleChat = async (job) => {
-    const currentUser  = JSON.parse(localStorage.getItem("currentUser-LS"));
-    // Log the order details to debug
-    console.log("job detaiks :", job); 
-
-
-    // refer this :  const newChat = new Chat({
-    //   chatId: req.isFreelancer ? req.userId + req.body.to : req.body.to + req.userId,
-    //   freelancerId: req.isFreelancer ? req.userId : req.body.to,
-    //   buyerId: req.isFreelancer ? req.body.to : req.userId,
-    // });
-
-    //cid : iski Freelancerid + buyerID;
-
-    
+    const currentUser = JSON.parse(localStorage.getItem("currentUser-LS"));
     const freelancerId = job.userId;
-    const buyerId = currentUser._id; 
+    const buyerId = currentUser._id;
     const cid = freelancerId + buyerId;
 
-    console.log("freelancerId:", freelancerId);
-    console.log("buyerId:", buyerId);
-    console.log("Chat ID (cid):", cid);
-
     try {
-        // Try to fetch the chat
-        const res = await axios.get(`${API_URL}/chats/${cid}`, {
-            withCredentials: true
-        });
-
-        // Navigate to the chat if it exists
-        if (res.data) {
-            navigate(`/chats/${res.data.chatId}`);
-        } else {
-            throw new Error('Chat not found, will create a new one');
-        }
+      const res = await axios.get(`${API_URL}/chats/${cid}`, { withCredentials: true });
+      if (res.data) {
+        navigate(`/chats/${res.data.chatId}`);
+      } else {
+        throw new Error('Chat not found, will create a new one');
+      }
     } catch (err) {
-        // If the chat doesn't exist, create a new one
-        console.error("Chat not found, creating a new one. Error:", err);
-
-        try {
-          const res = await axios.post(`${API_URL}/chats/`, {
-            to: currentUser.isFreelancer ? buyerId : freelancerId
-          }, { withCredentials: true }); // Ensure cookies or tokens are sent properly
-            navigate(`/chats/${res.data.chatId}`);
-        } catch (creationErr) {
-            console.error("Error while creating a new chat:", creationErr);
-        }
+      try {
+        const res = await axios.post(`${API_URL}/chats/`, {
+          to: currentUser.isFreelancer ? buyerId : freelancerId
+        }, { withCredentials: true });
+        navigate(`/chats/${res.data.chatId}`);
+      } catch (creationErr) {
+        console.error("Error while creating a new chat:", creationErr);
+      }
     }
-};
-
-
+  };
 
   const handleCreation = async (jobId) => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser-LS"));
-    console.log(currentUser);
-    const freelancerId = job.userId; // Assuming the userId is from job object
+    if (!currentUser) navigate('/login');
+    const freelancerId = job.userId;
     const buyerId = currentUser._id;
 
     try {
-      console.log("Creating order with jobId:", jobId);
-      console.log("FreelancerId:", freelancerId);
-      console.log("BuyerId:", buyerId);
-      console.log("Price:", job.price);
-
-      await axios.post(`${API_URL}/order/${jobId}`, { 
+      await axios.post(`${API_URL}/order/${id}`, {
         jobId: id,
         freelancerId: freelancerId,
         buyerId: buyerId,
         price: job.price,
       }, { withCredentials: true });
-
-      console.log("Order created successfully, navigating to orders page");
       navigate('/orders');
     } catch (error) {
       console.error("Error creating order:", error);
     }
   };
 
-if (loading) {
-  return <div>Loading...</div>;
-}
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-if (!job) {
-  return <div>Job not found</div>;
-}
-
+  if (!job) {
+    return <div>Job not found</div>;
+  }
 
   return (
-    <div className="bg-black min-h-screen text-white flex justify-center items-center ">
+    <div className="bg-black min-h-screen text-white flex justify-center items-center">
       <Card className="w-full max-w-lg">
         <CardHeader>
           <img
@@ -152,7 +107,6 @@ if (!job) {
         <CardContent>
           <p className='text-green-200 text-sm'>{job.short_description}</p>
           <hr className='w-60' />
-
           <p className='text-slate-200 text-sm mt-1'>{job.long_description}</p>
         </CardContent>
         <CardFooter>
@@ -161,22 +115,25 @@ if (!job) {
         <CardFooter>
           <p className='text-slate-400 text-sm'>Posted by: {username}</p>
         </CardFooter>
-  
-        {tunehibanaya ? (
-          <CardFooter>
-            <p className='text-1xl text-white'>You created this job</p>
-          </CardFooter>
-        ) : (
-          <>
-            <CardFooter className="flex-row gap-2">
-              <Button onClick={() => handleChat(job)}>Chat</Button>
-            </CardFooter>
-            <CardFooter className="flex-row gap-2">
-              <Button onClick={() => handleCreation(job._id)}>Create Order</Button>
-            </CardFooter>
-          </>
-        )}
-
+        <CardFooter>
+          {!currentUser ? (
+            <p className="text-red-500">Please log in to chat or create an order.</p>
+          ) : !currentUser.isFreelancer ? (
+            tunehibanaya ? (
+              <p className="text-1xl text-white">You created this job</p>
+            ) : (
+              <div className="flex-row gap-2">
+                <Button onClick={(e) => { e.stopPropagation(); handleChat(job); }}>Chat</Button>
+                <Button onClick={(e) => { e.stopPropagation(); handleCreation(job._id); }}>Create Order</Button>
+              </div>
+            )
+          ) : (
+            <>
+            <Button onClick={(e) => { e.stopPropagation(); handleCreation(job._id); }}>Create Order</Button>
+            <Button onClick={(e) => { e.stopPropagation(); handleChat(job); }}>Chat</Button>
+            </>
+          )}
+        </CardFooter>
       </Card>
     </div>
   );

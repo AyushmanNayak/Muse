@@ -9,12 +9,12 @@ console.log( process.env.STRIPE_SECRET_KEY );
 
 // console.log('Stripe Secret Key:', stripeSecretKey); // Log the secret key to ensure it's being loaded
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY); 
-
-const YOUR_DOMAIN = 'http://localhost:5173';
+ 
+const YOUR_DOMAIN = 'https://muse-front.vercel.app';
 
 router.post('/create-checkout-session', async (req, res) => {
   try {
-    console.log(process.env.STRIPE_SECRET_KEY); // Log the secret key to ensure it's being loaded
+   // console.log(process.env.STRIPE_SECRET_KEY); // Log the secret key to ensure it's being loaded
     console.log("mokaro")
     const { products } = req.body;
 
@@ -43,11 +43,15 @@ router.post('/create-checkout-session', async (req, res) => {
       line_items: lineItems,
       mode: 'payment',
       success_url: `${YOUR_DOMAIN}/success`,
-      cancel_url: `${YOUR_DOMAIN}/failure`
+      cancel_url: `${YOUR_DOMAIN}/failure`,
+      metadata: {
+        orderId: products[0]._id // Assuming each product has an ID
+      }
     });
 
     console.log("Stripe session created:", session.id);
     res.json({ id: session.id });
+    
   } catch (error) {
     console.error("Error creating Stripe session:", error);
     res.status(500).send("Error during payment");

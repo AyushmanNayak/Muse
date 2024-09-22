@@ -24,7 +24,7 @@ const userSchema = new Schema({
     dp: {
         type: String
     },
-    headline : {
+    profession : {
         type  : String
     },
     isFreelancer: {

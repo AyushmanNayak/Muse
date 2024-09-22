@@ -17,6 +17,7 @@ function Jobs() {
     "Songwriter",
     "Session Musician",
     "Bassist",
+    "Guitarist",
     "Drummer",
     "Producer",
     "Vocalist",

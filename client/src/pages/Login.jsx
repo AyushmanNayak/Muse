@@ -4,6 +4,8 @@ import { Input } from "../components/ui/Input";
 import { cn } from "@/lib/utils";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+
 
 
 const LabelInputContainer = ({ children, className }) => (
@@ -36,7 +38,7 @@ export function Login () {
       
     } catch (error) {
       setError(error.response.data);
-   //   alert(error.response.data)
+      toast.error(error.response.data || "Login failed! Please try again."); // Error toast
       console.log(error)
     }
   

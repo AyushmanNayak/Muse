@@ -5,21 +5,29 @@ import jwt from "jsonwebtoken";
 // Register Controller
 export const register = async (req, res) => {
     try {
+        const { username, password, email } = req.body;
+
+        // Validate request body
+        if (!username || !password || !email) {
+            return res.status(400).send("All fields are required.");
+        }
+
         // Hash the password
-        const hash = await bcrypt.hash(req.body.password, 10);
+        const hash = await bcrypt.hash(password, 10);
+
         // Create a new user
         const newUser = new User({
             ...req.body, // Spread the request body to include all other fields
             password: hash, // Override the password field with the hashed password
         });
-        
+
         await newUser.save();
         res.status(200).send("User created successfully");
     } catch (err) {
         console.error("Error in user registration:", err);
         res.status(500).send("Registration error");
     }
-};
+};;
 
 // Login Controller
 export const login = async (req, res) => {

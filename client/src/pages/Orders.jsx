@@ -109,7 +109,10 @@ const Orders = () => {
 
       const { id } = res.data;
       const result = await stripe.redirectToCheckout({ sessionId: id });
-      order.isCompleted = true;
+    //  order.isCompleted = true; --> this couldn't happen immediately after redirection. Rather, this should be handled by webhook :
+
+    //The webhook will notify your server when the payment is successfully processed, and then you can update the order status on the server side.
+
       if (result.error) {
         console.error(result.error.message);
       }

@@ -7,56 +7,58 @@ export function HeroParallaxDemo() {
 }
 export const products = [
   {
-    title: "Moon",
+    title: "Discover Top Musicians and Producers",
     thumbnail:
       "https://s3-us-west-2.amazonaws.com/static.music-man.com/website/images/instruments/heroes-mobile/slide-92.jpg?1596646883",
   },
   {
-    title: "gamer",
+    title: "Hire the best out there",
     thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/cursor.png",
+      "https://www.moderndrummer.com/wp-content/uploads/2021/09/Matt-Garstka_Home.jpg",
   },
   {
-    title: "asdasd",
+    title: "Get hired as a freelance musician",
     thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/rogue.png",
+      "https://www.kingsoundworks.com/wp-content/uploads/Sound-Mixing-Featured.jpg",
   },
-
   {
-    title: "Editorial",
+    title: "Discover Top Musicians and Producers",
     thumbnail:
       "https://s3-us-west-2.amazonaws.com/static.music-man.com/website/images/instruments/heroes-mobile/slide-92.jpg?1596646883",
   },
   {
-    title: "Edi",
+    title: "Get your song finished",
     thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/editrix.png",
+      "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/blogs/2147484495/images/nRUxuDOSeWAAJ3ZiFfGf_Ableton_Note_for_Singer-Songwriter_Producers_-_Learn_Music_Production_blog_LEVELS.png",
   },
   {
-    title: "Pixel Perfect",
+    title: "Let the pro handle your songs",
     thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/pixelperfect.png",
-  },
-
-  {
-    title: "Algoc",
-    thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/algochurn.png",
+      "https://ledlightsdirect.com/cdn/shop/articles/1_103194a9-37a6-4a32-b4d7-d3dbe18d9c9a.png?v=1684920353",
   },
   {
-    title: "Aceternity UI",
+    title: "Chat with your musician",
     thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/aceternityui.png",
+      "https://cdn.mos.cms.futurecdn.net/d2ueLaaeESsYxyjQuNc6aA-1200-80.jpg",
   },
   {
-    title: "Tailwind Master Kit",
-    
+    title: "Let the pro handle your songs ",
     thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/tailwindmasterkit.png",
+      "https://guitar.com/wp-content/uploads/2022/07/Marshall-Amplifiers-Credit-Mark-Holloway-Redferns@2000x1500.jpg",
   },
   {
-    title: "SmartBridge",
+    title: "Secured payments via Stripe",
     thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/smartbridge.png",
-  }
+      "https://cdn.mos.cms.futurecdn.net/d2ueLaaeESsYxyjQuNc6aA-1200-80.jpg",
+  },
+  {
+    title: "Chat with your musician",
+    thumbnail:
+      "https://images.unsplash.com/photo-1506091403742-e3aa39518db5?fm=jpg&w=3000&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWV0YWwlMjBjb25jZXJ0fGVufDB8fDB8fHww",
+  },
 ];
+
+
+
+
+

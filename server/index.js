@@ -10,6 +10,7 @@ import orderRoute from './routes/order.route.js';
 import payRoute from './routes/pay.route.js';
 import authRoute from './routes/auth.route.js';
 import cookieParser from 'cookie-parser';
+import webhook from "./routes/webhook.js";
 
 const app = express();
 
@@ -25,6 +26,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use('/api/webhook', webhook);  // Place this route before express.json() otherwise the body gets converted into json 
 app.use(express.json());
 app.use(cookieParser());
 
@@ -52,6 +54,7 @@ app.use("/api/jobs", jobRoute);
 app.use("/api/messages", messagesRoute);
 app.use("/api/order", orderRoute);
 app.use("/api/pay", payRoute);
+
 
 const PORT = process.env.PORT || 8001;
 

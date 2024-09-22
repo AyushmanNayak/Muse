@@ -13,7 +13,8 @@ export const createJob = async (req, res) => {
 
 
         const newJob = new Job({
-            userId: req.userId,   //matalab job ki usr id is actually usr ki user id && it must be given in the request
+            userId: req._id,   //matalab job ki usr id is actually usr ki user id && it must be given in the request
+            profession : req.profession, 
             ...req.body
         });
 
