@@ -64,7 +64,7 @@ export function Login () {
         
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" placeholder="••••••••" type="text" 
+          <Input id="password" placeholder="••••••••" type="password" 
           onChange = {e=> setPassword(e.target.value)}/>
         </LabelInputContainer>
 
